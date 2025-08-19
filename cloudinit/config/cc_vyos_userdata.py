@@ -32,7 +32,7 @@ frequency = PER_INSTANCE
 TEMPLATES_DIR = '/opt/vyatta/share/vyatta-cfg/templates/'
 # VyOS configuration files
 CFG_FILE_MAIN = '/opt/vyatta/etc/config/config.boot'
-CFG_FILE_DEFAULT = '/opt/vyatta/etc/config.boot.default'
+CFG_FILE_DEFAULT = '/usr/share/vyos/config.boot.default'
 
 
 # get list of all tag nodes
@@ -209,10 +209,10 @@ def handle(name, cfg, cloud, log, _args):
 
         # save a new configuration file
         try:
-            with open(config_file_path, 'w') as f:
+            with open(CFG_FILE_MAIN, 'w') as f:
                 f.write(config.to_string())
             logger.debug(
-                "Configuration file saved: {}".format(config_file_path))
+                "Configuration file saved: {}".format(CFG_FILE_MAIN))
         except Exception as err:
             logger.error("Failed to write config into the file {}: {}".format(
-                config_file_path, err))
+                CFG_FILE_MAIN, err))

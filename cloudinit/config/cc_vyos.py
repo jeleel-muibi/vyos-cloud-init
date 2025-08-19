@@ -1047,7 +1047,7 @@ def handle(name, cfg, cloud, log, _args):
 
     # VyOS configuration file selection
     cfg_file_name = '/opt/vyatta/etc/config/config.boot'
-    bak_file_name = '/opt/vyatta/etc/config.boot.default'
+    bak_file_name = '/usr/share/vyos/config.boot.default'
 
     # open configuration file
     if not Path(cfg_file_name).exists():
