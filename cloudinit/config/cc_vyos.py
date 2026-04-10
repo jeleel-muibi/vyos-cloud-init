@@ -28,6 +28,7 @@ from uuid import uuid4
 from cloudinit import log as logging
 from cloudinit.ssh_util import AuthKeyLineParser
 from cloudinit.distros import ug_util
+from cloudinit.net.network_state import ipv6_mask_to_net_prefix
 from cloudinit.settings import PER_INSTANCE
 from cloudinit.sources import INSTANCE_JSON_FILE
 from cloudinit.stages import Init
@@ -439,8 +440,12 @@ def _configure_subnets_v1(config,
             # configure routes
             if 'routes' in subnet:
                 for item in subnet['routes']:
+                    if ipaddress.ip_address(item['network']).version == 6:
+                        netmask = ipv6_mask_to_net_prefix(item['netmask'])
+                    else:
+                        netmask = item['netmask']
                     ip_network = ipaddress.ip_network('{}/{}'.format(
-                        item['network'], item['netmask']))
+                        item['network'], netmask))
                     set_ip_route(config, ip_network.version,
                                  ip_network.compressed, item['gateway'], True)
 
