@@ -32,8 +32,8 @@ make                                # see in-repo Makefile targets
 - Vendored upstream license files: `LICENSE-Apache2.0`, `LICENSE-GPLv3`.
 
 ## Cross-repo context
-- Consumed by `vyos/vyos-build` as one of the 14 source packages in `VyOS-Networks/vyos-build-packages/repos.toml`. Produces the `cloud-init` `.deb` shipped inside the VyOS ISO.
-- Companion to `VyOS-Networks/vyos-walinuxagent` (Azure-specific agent) and `VyOS-Networks/vyos-salt-minion` (SaltStack agent) for cloud-side configuration.
+- Consumed by `vyos/vyos-build` as one of the 14 source packages in an internal repository. Produces the `cloud-init` `.deb` shipped inside the VyOS ISO.
+- Companion to an internal repository (Azure-specific agent) and an internal repository (SaltStack agent) for cloud-side configuration.
 - VyOS-specific datasources may interact with `vyos-1x` config-tree primitives at runtime.
 
 ## Conventions
@@ -42,10 +42,7 @@ make                                # see in-repo Makefile targets
 - License: dual Apache-2.0 / GPL-3 (inherited from upstream `cloud-init`).
 - Default branch: `current`. Pull from upstream `canonical/cloud-init` via merge or rebase, preserve VyOS-specific deltas.
 
-## Mirror relationship
-Mirror twin: `VyOS-Networks/vyos-cloud-init`. Mirror pipeline status varies — treat the `vyos/*` side as canonical. The VyOS-Networks twin's default branch is reportedly `git-actions` (workflow-experiment branch); do not rely on it for code state.
-
 ## Notes for future contributors
 - Keep VyOS-specific changes minimal and clearly delineated to ease upstream merges.
-- After merging a PR, the `trigger-rebuild-repo-package.yml` workflow fires a REST `workflow_dispatch` into `$REMOTE_OWNER/vyos-build-packages` (REMOTE_OWNER = VyOS-Networks) to rebuild the Debian package as `vyosbot`.
+- After merging a PR, the `trigger-rebuild-repo-package.yml` workflow fires a REST `workflow_dispatch` into `$REMOTE_OWNER/vyos-build-packages` (REMOTE_OWNER = the private side) to rebuild the Debian package as `vyosbot`.
 - Cloud-init's upstream test suite is heavy; running `pytest tests/unittests` is usually sufficient for small VyOS-side patches.
