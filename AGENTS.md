@@ -1,7 +1,7 @@
 # AGENTS.md
 
 ## Project purpose
-VyOS-flavored fork of canonical `cloud-init`. Configures VyOS images on first boot in cloud environments (AWS, Azure, GCP, OpenStack, etc.) using upstream datasource handlers; VyOS-specific datasource and userdata-processor additions are intended future work.
+VyOS-flavored fork of canonical `cloud-init`. Configures VyOS images on first boot in cloud environments (AWS, Azure, GCP, OpenStack, etc.) using upstream datasource handlers.
 
 ## Tech stack
 - Python (≥3.x). Upstream `cloud-init` codebase.
