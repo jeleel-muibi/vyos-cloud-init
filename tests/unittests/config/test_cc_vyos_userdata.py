@@ -27,7 +27,9 @@ class TestVyosUserdata(CiTestCase):
         ordinary_node = templates_dir / "system" / "host-name"
         multi_node.mkdir(parents=True)
         ordinary_node.mkdir(parents=True)
-        (multi_node / "node.def").write_text("multi: true\n")
+        (multi_node / "node.def").write_text(
+            "multi: true\nhelp: System name server\n"
+        )
         (ordinary_node / "node.def").write_text("help: Host name\n")
 
         with mock.patch.object(
@@ -58,6 +60,14 @@ class TestVyosUserdata(CiTestCase):
             cc_vyos_userdata.string_to_command(
                 "delete system name-server '192.0.2.53'"
             ),
+        )
+        self.assertEqual(
+            {
+                "cmd_action": "delete",
+                "cmd_path": ["system", "host-name"],
+                "cmd_value": None,
+            },
+            cc_vyos_userdata.string_to_command("delete system host-name"),
         )
 
     def test_string_to_command_rejects_malformed_input(self):
@@ -174,6 +184,7 @@ class TestVyosUserdata(CiTestCase):
                 "set system host-name 'edge-a'",
                 "show version",
                 "delete system name-server '192.0.2.53'",
+                "delete system host-name",
             ],
         )
 
@@ -183,4 +194,4 @@ class TestVyosUserdata(CiTestCase):
         config.delete_value.assert_called_once_with(
             ["system", "name-server"], "192.0.2.53"
         )
-        config.delete.assert_not_called()
+        config.delete.assert_called_once_with(["system", "host-name"])
